@@ -43,3 +43,11 @@ test('overlay values survive migration spot-checks (incl. alpha forms)', () => {
   assert.equal(theme.colors['terminal.ansiMagenta'], o['terminal.ansiMagenta'])
   assert.equal(theme.colors['tab.activeBorderTop'], o['tab.activeBorderTop'])
 })
+
+test('borders around highlight regions are fully transparent (no loud frames)', () => {
+  const family = fixture.ids.filter((id) => /highlight/i.test(id) && /border/i.test(id))
+  assert.ok(family.length >= 14, `expected the highlight-border family, found ${family.length}`)
+  for (const id of family) {
+    assert.match(theme.colors[id], /^#[0-9A-F]{6}00$/, `${id} must be fully transparent`)
+  }
+})

@@ -3,7 +3,7 @@
 // design — acceptance batches replace inferred values with explicit ones, and
 // the build report shows which sections still rely on inference.
 import {
-  C, chrome, text, line, state,
+  C, chrome, text, line, state, hidden,
 } from '../palette.mjs'
 import { alpha, darken } from '../lib/color.mjs'
 
@@ -25,6 +25,9 @@ export function inferColor(id) {
   if (/deactivated|disabled|inactive|unfocused|unactive/.test(l)) {
     return isBg ? chrome.tabIdle : text.dim
   }
+  // Borders around highlight regions draw loud frames by mistake — stock themes
+  // leave them off; silence the whole family (pinned by a dedicated test).
+  if (/highlight/i.test(l) && /border/i.test(l)) return hidden
   if (/shadow/.test(l)) return darken(C.Midnight, 0.55, 'inferred widget shadow')
   if (/hover/.test(l)) return isBg ? chrome.hover : text.normal
   if (/active|focused|selected|selection|highlight/.test(l)) {

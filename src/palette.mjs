@@ -19,6 +19,9 @@ export const C = {
   Sunlight: c('Sunlight'), Sage: c('Sage'),
 }
 
+/** Fully transparent — silences borders that must not draw (highlight frames). */
+export const hidden = alpha(c('Midnight'), 0, 'transparent (Midnight @0%) — hides a border')
+
 /** Background chrome ramp, hand-tuned in the live overlay. Dark → raised. */
 export const chrome = {
   sunken: tuned('#151426', '≈ darken(Midnight, .09) — overlay activityBar.background'),

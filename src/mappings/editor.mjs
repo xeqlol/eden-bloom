@@ -1,5 +1,5 @@
 // Editor surface: the largest section (157 reference IDs).
-import { C, chrome, text, line, accent, state, alphaed } from '../palette.mjs'
+import { C, chrome, text, line, accent, state, alphaed, hidden } from '../palette.mjs'
 
 export const sections = ['Editor colors']
 
@@ -9,6 +9,7 @@ export default {
   'editorCursor.foreground': accent.cursor,
   'editor.selectionBackground': alphaed.selection,
   'editor.lineHighlightBackground': alphaed.lineHighlight,
+  'editor.lineHighlightBorder': hidden, // no frame around the current line (user call)
   'editorLineNumber.foreground': text.ghost,
   'editorLineNumber.activeForeground': text.lineActive,
   'editorIndentGuide.background': line.indent,
