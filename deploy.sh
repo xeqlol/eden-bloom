@@ -11,7 +11,7 @@ DEST="$EXT_ROOT/xeqlol.midnight-lilac-$VERSION"
 THEME_LUA="$(cygpath -m "$ROOT/wezterm_theme.lua")"
 
 echo "==> building + testing"
-(cd "$ROOT" && npm run-silent build >/dev/null && npm run-silent test >/dev/null)
+(cd "$ROOT" && npm run --silent build && npm run --silent test)
 echo "    tests green"
 
 echo "==> installing extension -> $DEST"
