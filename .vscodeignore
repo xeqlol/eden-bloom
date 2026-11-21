@@ -1,0 +1,11 @@
+src/**
+test/**
+scripts/**
+research/**
+build.mjs
+deploy.sh
+vscode_theme.json
+wezterm_theme.lua
+**/.git*
+**/.gitignore
+**/.gitattributes

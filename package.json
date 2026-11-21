@@ -1,0 +1,42 @@
+{
+  "name": "midnight-lilac",
+  "displayName": "Midnight Lilac",
+  "publisher": "xeqlol",
+  "version": "0.1.0",
+  "license": "MIT",
+  "icon": "icon.png",
+  "description": "Dark lilac theme for VS Code, generated from a single palette",
+  "engines": {
+    "vscode": "^1.85.0",
+    "node": ">=22.2.0"
+  },
+  "categories": [
+    "Themes"
+  ],
+  "keywords": [
+    "theme",
+    "dark",
+    "lilac",
+    "purple"
+  ],
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/xeqlol/midnight-lilac"
+  },
+  "contributes": {
+    "themes": [
+      {
+        "label": "Midnight Lilac",
+        "uiTheme": "vs-dark",
+        "path": "./themes/midnight-lilac-color-theme.json"
+      }
+    ]
+  },
+  "scripts": {
+    "build": "node build.mjs",
+    "test": "node --test test/",
+    "fixture": "node scripts/extract-ids.mjs",
+    "package": "npm run build && npm test && npx @vscode/vsce package",
+    "deploy": "bash deploy.sh"
+  }
+}
