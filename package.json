@@ -34,7 +34,7 @@
   },
   "scripts": {
     "build": "node build.mjs",
-    "test": "node --test test/",
+    "test": "node --test",
     "fixture": "node scripts/extract-ids.mjs",
     "package": "npm run build && npm test && npx @vscode/vsce package",
     "deploy": "bash deploy.sh"
