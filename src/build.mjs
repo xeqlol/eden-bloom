@@ -4,6 +4,7 @@ import { explicitMappings } from './mappings/index.mjs'
 import { inferColor } from './mappings/defaults.mjs'
 import { emitTheme } from './emit/vscode.mjs'
 import { emitWezterm } from './emit/wezterm.mjs'
+import { renderIcon } from './icon.mjs'
 import { referenceIds, referenceSections, overlayKeys } from './reference.mjs'
 
 const serialize = (color) => (color.a === 255 ? color.hex6() : color.hex8())
@@ -49,5 +50,5 @@ export function build() {
     const count = ids.filter((id) => inferred.includes(id)).length
     if (count) inferredBySection[section] = count
   }
-  return { themeJson, weztermLua, inferredBySection, inferredCount: inferred.length }
+  return { themeJson, weztermLua, iconPng: renderIcon(), inferredBySection, inferredCount: inferred.length }
 }

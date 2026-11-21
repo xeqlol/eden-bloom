@@ -14,3 +14,9 @@ test('committed wezterm artifact is byte-identical to a fresh build', () => {
   const committed = readFileSync(new URL('../wezterm_theme.lua', import.meta.url), 'utf8')
   assert.equal(committed, weztermLua, 'wezterm_theme.lua is stale — run npm run build')
 })
+
+test('committed icon artifact is byte-identical to a fresh build', () => {
+  const { iconPng } = build()
+  const committed = readFileSync(new URL('../icon.png', import.meta.url))
+  assert.ok(committed.equals(iconPng), 'icon.png is stale — run npm run build')
+})
