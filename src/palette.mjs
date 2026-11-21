@@ -36,6 +36,7 @@ export const line = {
   subtle: mix(C.Midnight, C.Lavender, 0.18, 'border: Midnight→Lavender .18'),
   panel: tuned('#39324F', '≈ Plum→Lavender .25 — overlay panel.border'),
   indent: tuned('#39344D', '≈ Plum→Lavender .28 — overlay editorIndentGuide.background'),
+  activeIndent: tuned('#82739F', '≈ Lavender darkened — overlay editorIndentGuide.activeBackground'),
   strong: tuned('#514866', '≈ Plum→Lavender .4 — overlay input.border'),
 }
 
@@ -53,6 +54,9 @@ export const text = {
   operator: tuned('#B7A9CC', '≈ Lavender→white .35 — overlay Operators token'),
   lineActive: tuned('#D6B9D5', '≈ Lilac desaturated — overlay editorLineNumber.activeForeground'),
   activity: tuned('#F2C6C4', '≈ Rose lightened — overlay activityBar.foreground'),
+  selected: tuned('#FFF0E4', '≈ Sunlight→white — overlay list.activeSelectionForeground'),
+  onAccent: tuned('#FFF3E8', '≈ Sunlight→white — overlay button.foreground'),
+  onBadge: tuned('#FFE1C9', '≈ Sunlight soft — overlay badge.foreground'),
 }
 
 /** Interactive accents. */
