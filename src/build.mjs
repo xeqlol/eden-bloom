@@ -3,6 +3,7 @@
 import { explicitMappings } from './mappings/index.mjs'
 import { inferColor } from './mappings/defaults.mjs'
 import { emitTheme } from './emit/vscode.mjs'
+import { emitWezterm } from './emit/wezterm.mjs'
 import { referenceIds, referenceSections, overlayKeys } from './reference.mjs'
 
 const serialize = (color) => (color.a === 255 ? color.hex6() : color.hex8())
@@ -42,10 +43,11 @@ export function build() {
   const { resolved, inferred } = resolveColors()
   const colors = orderedPlainColors(resolved)
   const themeJson = emitTheme(colors)
+  const weztermLua = emitWezterm()
   const inferredBySection = {}
   for (const [section, ids] of Object.entries(referenceSections)) {
     const count = ids.filter((id) => inferred.includes(id)).length
     if (count) inferredBySection[section] = count
   }
-  return { themeJson, inferredBySection, inferredCount: inferred.length }
+  return { themeJson, weztermLua, inferredBySection, inferredCount: inferred.length }
 }

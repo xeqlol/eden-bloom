@@ -8,3 +8,9 @@ test('committed theme artifact is byte-identical to a fresh build', () => {
   const committed = readFileSync(new URL('../themes/midnight-lilac-color-theme.json', import.meta.url), 'utf8')
   assert.equal(committed, themeJson, 'themes/ is stale — run npm run build (and never hand-edit generated files)')
 })
+
+test('committed wezterm artifact is byte-identical to a fresh build', () => {
+  const { weztermLua } = build()
+  const committed = readFileSync(new URL('../wezterm_theme.lua', import.meta.url), 'utf8')
+  assert.equal(committed, weztermLua, 'wezterm_theme.lua is stale — run npm run build')
+})
