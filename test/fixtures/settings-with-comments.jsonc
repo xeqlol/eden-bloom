@@ -1,0 +1,28 @@
+// User settings with comments, trailing commas and a URL-valued setting —
+// the surgery must tolerate all of it without eating the // inside strings.
+{
+  "editor.fontSize": 14,
+  "editor.fontFamily": "JetBrainsMono Nerd Font",
+  "workbench.colorTheme": "Default Dark Modern",
+  "workbench.colorCustomizations": {
+    "editor.background": "#171729",
+    "terminal.ansiRed": "#F18C9A",
+  },
+  "editor.tokenColorCustomizations": {
+    "textMateRules": [
+      {
+        "name": "Comments",
+        "scope": ["comment"],
+        "settings": { "foreground": "#827B9B", "fontStyle": "italic" },
+      },
+    ],
+  },
+  "git.openRepositoryInParentFolders": "never",
+  "update.mode": "none",
+  "json.schemas": [
+    {
+      "fileMatch": ["/.prettierrc"],
+      "url": "https://json.schemastore.org/prettierrc.json",
+    },
+  ],
+}
