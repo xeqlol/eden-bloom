@@ -54,3 +54,38 @@ test('paths are emitted with forward slashes regardless of input separators', ()
 test('a config without `return config` aborts loudly instead of guessing', () => {
   assert.throws(() => applyWezterm('local x = 1\n', THEME_PATHS), /return config/)
 })
+
+const LEGACY_CONFIG = `local wezterm = require 'wezterm'
+local config = wezterm.config_builder()
+config.color_schemes = { ['Coffee Leather'] = { background = '#343028' } }
+config.color_scheme = 'Coffee Leather'
+-- >>> midnight-lilac >>> (managed by Midnight Lilac deploy.sh — delete this block to revert)
+local ml = dofile 'C:/old/path/wezterm_theme.lua'
+config.color_schemes[ml.name] = ml.colors
+config.window_frame = ml.window_frame
+config.color_scheme = ml.name
+-- <<< midnight-lilac <<<
+-- >>> user block >>> (designed to sit AFTER the theme block and override it)
+local scheme = config.color_schemes[config.color_scheme]
+config.window_frame.font_size = 11.0
+-- <<< user block <<<
+return config
+`
+
+test('a legacy midnight-lilac block is migrated in place (position preserved)', () => {
+  const { output, changed } = applyWezterm(LEGACY_CONFIG, THEME_PATHS)
+  assert.equal(changed, true)
+  assert.ok(!output.includes('midnight-lilac'), 'legacy markers must be gone')
+  assert.ok(!output.includes('wezterm_theme.lua'), 'legacy dofile must be gone')
+  assert.equal((output.match(/>>> eden-bloom >>>/g) ?? []).length, 1, 'exactly one eden block')
+  // the user block stays AFTER the theme block, as its comment promises
+  assert.ok(output.indexOf('>>> eden-bloom >>>') < output.indexOf('>>> user block >>>'))
+  assert.ok(output.includes(`dofile(f)`))
+})
+
+test('legacy block plus a stray eden block: legacy position wins, no duplicates', () => {
+  const { output } = applyWezterm(LEGACY_CONFIG + '-- >>> eden-bloom >>>\nx\n-- <<< eden-bloom <<<\n', THEME_PATHS)
+  assert.equal((output.match(/>>> eden-bloom >>>/g) ?? []).length, 1)
+  assert.ok(!output.includes('midnight-lilac'))
+  assert.ok(output.indexOf('>>> eden-bloom >>>') < output.indexOf('>>> user block >>>'))
+})

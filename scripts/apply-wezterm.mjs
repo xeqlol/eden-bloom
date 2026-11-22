@@ -8,6 +8,27 @@ import { readFileSync, writeFileSync, copyFileSync } from 'node:fs'
 const BEGIN = '-- >>> eden-bloom >>> (managed by Eden Bloom deploy.sh — delete this block to revert)'
 const END = '-- <<< eden-bloom <<<'
 
+// The pre-rename managed block (Midnight Lilac era). It referenced
+// wezterm_theme.lua at the repo root, which no longer exists — any surviving
+// copy must be migrated, in place, to the eden-bloom block. Position matters:
+// user blocks layered "after the theme block" must stay after it.
+const LEGACY_BEGIN = '-- >>> midnight-lilac >>>'
+const LEGACY_END = '-- <<< midnight-lilac <<<'
+
+// Detection keys — prefixes of the full markers, so hand-trimmed blocks
+// (e.g. a BEGIN comment someone shortened) are still recognized.
+const EDEN_KEY = '-- >>> eden-bloom >>>'
+const LEGACY_KEY = LEGACY_BEGIN
+
+/** [start, endExclusive] of a managed block, or null when absent. */
+function span(text, beginMarker, endMarker) {
+  const b = text.indexOf(beginMarker)
+  if (b === -1) return null
+  const e = text.indexOf(endMarker, b)
+  if (e === -1) throw new Error(`found ${beginMarker} marker without its END — fix ~/.wezterm.lua manually`)
+  return [b, e + endMarker.length]
+}
+
 const buildBlock = (themePaths) => [
   BEGIN,
   'local eden = {',
@@ -27,19 +48,30 @@ const buildBlock = (themePaths) => [
 ].join('\n')
 
 /**
- * Pure wiring. Returns { output, changed }. Throws when the config has no
- * `return config` and no existing managed block — we refuse to guess.
+ * Pure wiring. Returns { output, changed }. Prefers the legacy block's
+ * position (user blocks layered after the theme keep working), then the
+ * existing eden-bloom block, then a fresh insert before `return config`.
+ * Throws when no anchor exists — we refuse to guess.
  */
 export function applyWezterm(luaText, themePaths) {
   const block = buildBlock(themePaths)
 
-  const beginIdx = luaText.indexOf(BEGIN)
-  if (beginIdx !== -1) {
-    const endIdx = luaText.indexOf(END, beginIdx)
-    if (endIdx === -1) throw new Error('found BEGIN marker without END — fix ~/.wezterm.lua manually')
-    const existing = luaText.slice(beginIdx, endIdx + END.length)
+  const legacy = span(luaText, LEGACY_KEY, LEGACY_END)
+  const eden = span(luaText, EDEN_KEY, END)
+
+  if (legacy) {
+    // Migration: drop any eden block elsewhere, then take the legacy spot.
+    let out = luaText
+    if (eden) out = out.slice(0, eden[0]) + out.slice(eden[1])
+    const l2 = span(out, LEGACY_KEY, LEGACY_END)
+    const output = out.slice(0, l2[0]) + block + out.slice(l2[1])
+    return { output, changed: output !== luaText }
+  }
+
+  if (eden) {
+    const existing = luaText.slice(eden[0], eden[1])
     if (existing === block) return { output: luaText, changed: false }
-    return { output: luaText.slice(0, beginIdx) + block + luaText.slice(endIdx + END.length), changed: true }
+    return { output: luaText.slice(0, eden[0]) + block + luaText.slice(eden[1]), changed: true }
   }
 
   const m = /^return config/m.exec(luaText)
