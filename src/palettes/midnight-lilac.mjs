@@ -43,19 +43,20 @@ export const chrome = {
   selected: tuned('#51436F', '≈ Plum→Lilac .35 — overlay badge/list selection background'),
 }
 
-/** Borders and separators. */
+/** Borders and separators. Softening pass 2026-11-22: pulled closer to the
+ * surfaces (was .25/.28/.4 mixes) so chrome frames read gentle, not boxed. */
 export const line = {
-  subtle: mix(C.bg, C.muted, 0.18, 'border: Midnight→Lavender .18'),
-  panel: tuned('#39324F', '≈ Plum→Lavender .25 — overlay panel.border'),
-  indent: tuned('#39344D', '≈ Plum→Lavender .28 — overlay editorIndentGuide.background'),
+  subtle: mix(C.bg, C.muted, 0.12, 'border: Midnight→Lavender .12 (softened from .18)'),
+  panel: tuned('#342E48', '≈ Plum→Lavender .15 — overlay panel.border, softened from #39324F'),
+  indent: tuned('#342F46', '≈ Plum→Lavender .17 — overlay editorIndentGuide.background, softened from #39344D'),
   activeIndent: tuned('#82739F', '≈ Lavender darkened — overlay editorIndentGuide.activeBackground'),
-  strong: tuned('#514866', '≈ Plum→Lavender .4 — overlay input.border'),
+  strong: tuned('#463E5B', '≈ Plum→Lavender .3 — overlay input.border, softened from #514866'),
 }
 
 /** Foreground text roles. */
 export const text = {
   normal: tuned('#E9E2F2', '≈ Midnight→white .87 — overlay editor.foreground'),
-  soft: tuned('#D9D0E8', '≈ Midnight→white .8 — overlay sideBar.foreground'),
+  soft: tuned('#CFC6DF', '≈ Midnight→white .8, Lavender-tinted — overlay sideBar.foreground (file tree), softened from #D9D0E8'),
   status: tuned('#E9DDF0', '≈ Midnight→Lilac-white — overlay statusBar.foreground'),
   title: tuned('#E9E0F0', '≈ Midnight→white .85 — overlay titleBar.activeForeground'),
   input: tuned('#F0E8F5', '≈ Midnight→white .9 — overlay input.foreground'),
