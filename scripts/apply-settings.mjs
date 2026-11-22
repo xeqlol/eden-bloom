@@ -1,8 +1,9 @@
-// Live settings.json surgery: remove the Midnight Lilac overlay blocks and pin
-// workbench.colorTheme. Pure core (testable) + CLI with dry-run default,
-// timestamped backups (pruned to 5) and EOL preservation.
+// Live settings.json surgery: remove the legacy overlay blocks and pin
+// workbench.colorTheme to the flagship Eden Bloom theme. Pure core (testable)
+// + CLI with dry-run default, timestamped backups (pruned to 5) and EOL
+// preservation.
 import { readFileSync, writeFileSync, copyFileSync, readdirSync } from 'node:fs'
-import { THEME_NAME } from '../src/reference.mjs'
+import { flagship } from '../src/palettes/index.mjs'
 
 /** String-aware comment stripper: removes //… and /*…*\/ outside strings only. */
 export function stripJsonc(text) {
@@ -72,7 +73,7 @@ export function applySettings(text) {
   const before = JSON.stringify(parsed)
   delete parsed['workbench.colorCustomizations']
   delete parsed['editor.tokenColorCustomizations']
-  parsed['workbench.colorTheme'] = THEME_NAME
+  parsed['workbench.colorTheme'] = flagship.label
   const changed = JSON.stringify(parsed) !== before
   if (!changed) return { output: text, changed: false }
   const output = JSON.stringify(parsed, null, 2).replaceAll('\n', eol) + eol
@@ -130,18 +131,18 @@ console.log(`${settingsPath} would change:`)
 printDiff(text, result.output)
 
 if (!apply) {
-  console.log('dry run — re-run with --apply to write (a .mmll-backup-* copy is kept)')
+  console.log('dry run — re-run with --apply to write (a .eb-backup-* copy is kept)')
   process.exit(0)
 }
 
 const stamp = new Date().toISOString().replaceAll(/[-:T]/g, '').slice(0, 14)
-const backup = `${settingsPath}.mmll-backup-${stamp}`
+const backup = `${settingsPath}.eb-backup-${stamp}`
 copyFileSync(settingsPath, backup)
 writeFileSync(settingsPath, result.output)
 
 const dir = settingsPath.replaceAll('\\', '/').split('/').slice(0, -1).join('/')
 const base = settingsPath.replaceAll('\\', '/').split('/').pop()
-const backups = readdirSync(dir).filter((f) => f.startsWith(`${base}.mmll-backup-`)).sort()
+const backups = readdirSync(dir).filter((f) => f.startsWith(`${base}.eb-backup-`)).sort()
 for (const old of backups.slice(0, Math.max(0, backups.length - 5))) {
   const { unlinkSync } = await import('node:fs')
   unlinkSync(`${dir}/${old}`)

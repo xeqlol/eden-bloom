@@ -1,10 +1,9 @@
 // Activity bar (left rail) and profiles.
-import { chrome, text, accent } from '../palette.mjs'
 
 export const sections = ['Activity Bar', 'Profiles']
 
-export default {
-  'activityBar.background': chrome.sunken,
-  'activityBar.foreground': text.activity,
-  'activityBar.activeBorder': accent.peachy,
-}
+export default (p) => ({
+  'activityBar.background': p.chrome.sunken,
+  'activityBar.foreground': p.text.activity,
+  'activityBar.activeBorder': p.accent.peachy,
+})

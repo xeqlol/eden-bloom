@@ -35,10 +35,10 @@ export const mappingFiles = {
 }
 
 /** Merge all explicit entries; throw on duplicate ownership. */
-export function explicitMappings() {
+export function explicitMappings(p) {
   const merged = new Map()
   for (const [file, mapping] of Object.entries(mappingFiles)) {
-    for (const [id, color] of Object.entries(mapping.default)) {
+    for (const [id, color] of Object.entries(mapping.default(p))) {
       if (merged.has(id)) {
         throw new Error(`duplicate color ID ${id} (already claimed when merging ${file})`)
       }

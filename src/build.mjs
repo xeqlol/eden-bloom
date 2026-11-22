@@ -1,24 +1,25 @@
 // Build orchestrator: mappings (+ inference) -> ordered colors -> artifacts.
-// Also the test seam: everything downstream of the palette goes through here.
+// Also the test seam: everything downstream of a palette goes through here.
 import { explicitMappings } from './mappings/index.mjs'
 import { inferColor } from './mappings/defaults.mjs'
 import { emitTheme } from './emit/vscode.mjs'
 import { emitWezterm } from './emit/wezterm.mjs'
+import { emitObsidianCss, emitObsidianManifest } from './emit/obsidian.mjs'
 import { renderIcon } from './icon.mjs'
 import { referenceIds, referenceSections, overlayKeys } from './reference.mjs'
 
 const serialize = (color) => (color.a === 255 ? color.hex6() : color.hex8())
 
 /** Resolve every reference ID: explicit mapping wins, inference fills the rest. */
-export function resolveColors() {
-  const explicit = explicitMappings()
+export function resolveColors(p) {
+  const explicit = explicitMappings(p)
   const resolved = new Map()
   const inferred = []
   for (const id of referenceIds) {
     if (explicit.has(id)) {
       resolved.set(id, explicit.get(id))
     } else {
-      resolved.set(id, inferColor(id))
+      resolved.set(id, inferColor(id, p))
       inferred.push(id)
     }
   }
@@ -40,15 +41,22 @@ function orderedPlainColors(resolved) {
   return ordered
 }
 
-export function build() {
-  const { resolved, inferred } = resolveColors()
+/** All artifacts for one palette. */
+export function build(p, { version, author, authorUrl } = {}) {
+  const { resolved, inferred } = resolveColors(p)
   const colors = orderedPlainColors(resolved)
-  const themeJson = emitTheme(colors)
-  const weztermLua = emitWezterm()
   const inferredBySection = {}
   for (const [section, ids] of Object.entries(referenceSections)) {
     const count = ids.filter((id) => inferred.includes(id)).length
     if (count) inferredBySection[section] = count
   }
-  return { themeJson, weztermLua, iconPng: renderIcon(), inferredBySection, inferredCount: inferred.length }
+  return {
+    themeJson: emitTheme(colors, p),
+    weztermLua: emitWezterm(p),
+    obsidianCss: emitObsidianCss(p),
+    obsidianManifest: version ? emitObsidianManifest(p, version, author, authorUrl) : null,
+    iconPng: renderIcon(p),
+    inferredBySection,
+    inferredCount: inferred.length,
+  }
 }

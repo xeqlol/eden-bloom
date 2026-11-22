@@ -1,10 +1,9 @@
 // Lists and trees: explorer, search results, outline, scm view.
-import { chrome, text } from '../palette.mjs'
 
 export const sections = ['Lists and trees']
 
-export default {
-  'list.activeSelectionBackground': chrome.selected,
-  'list.activeSelectionForeground': text.selected,
-  'list.hoverBackground': chrome.hover,
-}
+export default (p) => ({
+  'list.activeSelectionBackground': p.chrome.selected,
+  'list.activeSelectionForeground': p.text.selected,
+  'list.hoverBackground': p.chrome.hover,
+})

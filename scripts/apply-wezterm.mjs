@@ -1,20 +1,28 @@
-// ~/.wezterm.lua wiring: inserts (or refreshes) the managed midnight-lilac
-// block right before `return config`. Pure core + CLI with dry-run default
+// ~/.wezterm.lua wiring: inserts (or refreshes) the managed eden-bloom block
+// right before `return config`. Registers every palette as a color scheme and
+// selects the first one as the default. Pure core + CLI with dry-run default
 // and timestamped backups. Idempotent: a second run replaces the block in
 // place, byte-stable.
 import { readFileSync, writeFileSync, copyFileSync } from 'node:fs'
 
-const BEGIN = '-- >>> midnight-lilac >>> (managed by Midnight Lilac deploy.sh — delete this block to revert)'
-const END = '-- <<< midnight-lilac <<<'
+const BEGIN = '-- >>> eden-bloom >>> (managed by Eden Bloom deploy.sh — delete this block to revert)'
+const END = '-- <<< eden-bloom <<<'
 
-const buildBlock = (themePath) => [
+const buildBlock = (themePaths) => [
   BEGIN,
-  `local ml = dofile '${themePath}'`,
-  `pcall(wezterm.add_watch_file, '${themePath}')`,
+  'local eden = {',
+  ...themePaths.map((t) => `  '${t.replaceAll('\\', '/')}',`),
+  '}',
   'config.color_schemes = config.color_schemes or {}',
-  'config.color_schemes[ml.name] = ml.colors',
-  'config.window_frame = ml.window_frame',
-  'config.color_scheme = ml.name',
+  'local flagship',
+  'for _, f in ipairs(eden) do',
+  '  local t = dofile(f)',
+  '  config.color_schemes[t.name] = t.colors',
+  '  pcall(wezterm.add_watch_file, f)',
+  '  if flagship == nil then flagship = t end',
+  'end',
+  'config.window_frame = flagship.window_frame',
+  'config.color_scheme = flagship.name',
   END,
 ].join('\n')
 
@@ -22,9 +30,8 @@ const buildBlock = (themePath) => [
  * Pure wiring. Returns { output, changed }. Throws when the config has no
  * `return config` and no existing managed block — we refuse to guess.
  */
-export function applyWezterm(luaText, themePathRaw) {
-  const themePath = themePathRaw.replaceAll('\\', '/')
-  const block = buildBlock(themePath)
+export function applyWezterm(luaText, themePaths) {
+  const block = buildBlock(themePaths)
 
   const beginIdx = luaText.indexOf(BEGIN)
   if (beginIdx !== -1) {
@@ -55,18 +62,21 @@ const flag = (name) => {
   return i === -1 ? null : args[i + 1]
 }
 const luaPath = flag('--lua')
-const themePath = flag('--theme')
+const themePaths = []
+for (let i = 0; i < args.length; i += 1) {
+  if (args[i] === '--theme') themePaths.push(args[i + 1])
+}
 const apply = args.includes('--apply')
 
-if (!luaPath || !themePath) {
-  console.error('usage: node scripts/apply-wezterm.mjs --lua <path> --theme <path> [--apply]')
+if (!luaPath || themePaths.length === 0) {
+  console.error('usage: node scripts/apply-wezterm.mjs --lua <path> --theme <path> [--theme <path> …] [--apply]')
   process.exit(1)
 }
 
 const text = readFileSync(luaPath, 'utf8')
 let result
 try {
-  result = applyWezterm(text, themePath)
+  result = applyWezterm(text, themePaths)
 } catch (err) {
   console.error(`aborting, nothing written: ${err.message}`)
   process.exit(1)
@@ -77,16 +87,16 @@ if (!result.changed) {
   process.exit(0)
 }
 
-console.log(`${luaPath} would ${text.includes(BEGIN) ? 'refresh' : 'gain'} the managed midnight-lilac block:`)
-console.log(result.output.split('\n').filter((l) => l.includes('midnight-lilac') || l.includes('ml.')).map((l) => `  ${l.trim()}`).join('\n'))
+console.log(`${luaPath} would ${text.includes(BEGIN) ? 'refresh' : 'gain'} the managed eden-bloom block:`)
+console.log(result.output.split('\n').filter((l) => l.includes('eden') || l.includes('dofile') || l.includes('flagship')).map((l) => `  ${l.trim()}`).join('\n'))
 
 if (!apply) {
-  console.log('dry run — re-run with --apply to write (a .mmll-backup-* copy is kept)')
+  console.log('dry run — re-run with --apply to write (a .eb-backup-* copy is kept)')
   process.exit(0)
 }
 
 const stamp = new Date().toISOString().replaceAll(/[-:T]/g, '').slice(0, 14)
-const backup = `${luaPath}.mmll-backup-${stamp}`
+const backup = `${luaPath}.eb-backup-${stamp}`
 copyFileSync(luaPath, backup)
 writeFileSync(luaPath, result.output)
 console.log(`written: ${luaPath} (backup: ${backup})`)

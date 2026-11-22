@@ -1,26 +1,35 @@
-// THE single source of truth. The only file in src/ allowed to contain raw hex
-// literals: the 10 base colors verbatim, plus hand-tuned derivatives recorded
-// as tuned(hex, note) where every note names the base color(s) it descends from.
-// Everything downstream consumes Color objects from this module — never strings.
-import { hex, tuned, mix, alpha, blend } from './lib/color.mjs'
+// THE flagship palette: Midnight Lilac, hand-tuned in the live overlay.
+// The only kind of file in src/ allowed to contain raw hex literals besides
+// its derived siblings: the 10 base colors verbatim, plus hand-tuned
+// derivatives recorded as tuned(hex, note) where every note names the base
+// color(s) it descends from. Everything downstream consumes Color objects
+// from palettes — never strings.
+import { hex, tuned, mix, alpha, blend } from '../lib/color.mjs'
 
-/** The 10 agreed base colors (verbatim from the grilling session). */
+/** The 10 agreed base colors (verbatim from the grilling session), in role slots. */
 export const base = {
-  Midnight: '#171729', Plum: '#29233F', Lavender: '#827B9B', IceBlue: '#8EADE8',
-  Lilac: '#D4A6E4', Rose: '#E9B5C5', Coral: '#F18C9A', Peach: '#F5B58D',
-  Sunlight: '#FFD0A6', Sage: '#A9D3C1',
+  bg: '#171729', raised: '#29233F', muted: '#827B9B', info: '#8EADE8',
+  accent: '#D4A6E4', secondary: '#E9B5C5', error: '#F18C9A', warm: '#F5B58D',
+  bright: '#FFD0A6', success: '#A9D3C1',
+}
+
+/** Poetic display names for the slots (used in notes, README, swatches). */
+export const names = {
+  bg: 'Midnight', raised: 'Plum', muted: 'Lavender', info: 'Ice Blue',
+  accent: 'Lilac', secondary: 'Rose', error: 'Coral', warm: 'Peach',
+  bright: 'Sunlight', success: 'Sage',
 }
 
 // Color-object view of the base ten.
-const c = (name) => hex(base[name], `base ${name}`)
+const c = (slot) => hex(base[slot], `base ${names[slot]} (${slot})`)
 export const C = {
-  Midnight: c('Midnight'), Plum: c('Plum'), Lavender: c('Lavender'), IceBlue: c('IceBlue'),
-  Lilac: c('Lilac'), Rose: c('Rose'), Coral: c('Coral'), Peach: c('Peach'),
-  Sunlight: c('Sunlight'), Sage: c('Sage'),
+  bg: c('bg'), raised: c('raised'), muted: c('muted'), info: c('info'),
+  accent: c('accent'), secondary: c('secondary'), error: c('error'), warm: c('warm'),
+  bright: c('bright'), success: c('success'),
 }
 
 /** Fully transparent — silences borders that must not draw (highlight frames). */
-export const hidden = alpha(c('Midnight'), 0, 'transparent (Midnight @0%) — hides a border')
+export const hidden = alpha(C.bg, 0, 'transparent (Midnight @0%) — hides a border')
 
 /** Background chrome ramp, hand-tuned in the live overlay. Dark → raised. */
 export const chrome = {
@@ -36,7 +45,7 @@ export const chrome = {
 
 /** Borders and separators. */
 export const line = {
-  subtle: mix(C.Midnight, C.Lavender, 0.18, 'border: Midnight→Lavender .18'),
+  subtle: mix(C.bg, C.muted, 0.18, 'border: Midnight→Lavender .18'),
   panel: tuned('#39324F', '≈ Plum→Lavender .25 — overlay panel.border'),
   indent: tuned('#39344D', '≈ Plum→Lavender .28 — overlay editorIndentGuide.background'),
   activeIndent: tuned('#82739F', '≈ Lavender darkened — overlay editorIndentGuide.activeBackground'),
@@ -64,7 +73,7 @@ export const text = {
 
 /** Interactive accents. */
 export const accent = {
-  primary: c('Lilac'),
+  primary: C.accent,
   focus: tuned('#B9A6E8', '≈ Lilac→Lavender — overlay focusBorder'),
   bracket: tuned('#C5A8E8', '≈ Lilac lightened — overlay editorBracketMatch.border'),
   button: tuned('#806CA8', '≈ Lilac→Plum .45 — overlay button.background'),
@@ -72,17 +81,17 @@ export const accent = {
   peachy: tuned('#FFB98F', '≈ Sunlight→Peach — overlay activityBar.activeBorder'),
   rose: tuned('#E9A4B1', '≈ Rose dimmed — overlay panelTitle.activeBorder'),
   roseStrong: tuned('#F5A6A9', '≈ Rose→Coral — overlay tab.activeBorderTop'),
-  cursor: c('Sunlight'),
+  cursor: C.bright,
 }
 
 /** Semantic / state colors. */
 export const state = {
-  error: c('Coral'),
+  error: C.error,
   errorBright: tuned('#FF8798', '≈ Coral lightened — overlay editorError.foreground'),
-  warning: c('Peach'),
+  warning: C.warm,
   warningBright: tuned('#F4B77F', '≈ Peach muted — overlay editorWarning.foreground'),
   info: tuned('#91B8F2', '≈ IceBlue muted — overlay editorInfo.foreground'),
-  success: c('Sage'),
+  success: C.success,
   gitAdded: tuned('#91C7B2', '≈ Sage muted — overlay gitDecoration.addedResourceForeground'),
   gitModified: tuned('#E9A77F', '≈ Peach muted — overlay gitDecoration.modifiedResourceForeground'),
   gitDeleted: tuned('#E58D9B', '≈ Coral muted — overlay gitDecoration.deletedResourceForeground'),
@@ -96,7 +105,7 @@ export const alphaed = {
   bracketMatch: alpha(tuned('#8D79B6', '≈ Lilac→Plum muted — overlay editorBracketMatch.background'), 0x33 / 0xff, 'bracket match: Lilac @20% — overlay'),
 }
 /** Opaque WezTerm equivalent of the selection overlay. */
-export const selectionOpaque = blend(selectionBase, C.Midnight, 0x77 / 0xff, 'selection pre-blended over Midnight for WezTerm')
+export const selectionOpaque = blend(selectionBase, C.bg, 0x77 / 0xff, 'selection pre-blended over Midnight for WezTerm')
 
 /** Terminal ANSI-16, verbatim from the overlay's terminal.ansi* values. */
 export const terminal16 = {
@@ -120,33 +129,33 @@ export const terminal16 = {
 
 /** Syntax token colors (the 16 overlay textMateRules, verbatim values). */
 export const tokens = {
-  comment: c('Lavender'),
-  keyword: c('Lilac'),
-  string: c('Sage'),
-  number: c('Peach'),
+  comment: C.muted,
+  keyword: C.accent,
+  string: C.success,
+  number: C.warm,
   fn: tuned('#F2C4A7', '≈ Peach light — Functions token'),
   type: tuned('#91B8E8', '≈ IceBlue muted — Types token'),
   variable: text.variable,
-  parameter: c('Rose'),
+  parameter: C.secondary,
   property: tuned('#E8AFA5', '≈ Rose→Peach — Properties token'),
   operator: text.operator,
   tag: tuned('#E69CB4', '≈ Rose bright — Tags token'),
   attribute: tuned('#F2C18E', '≈ Peach light — Attributes token'),
   heading: tuned('#F3B6C5', '≈ Rose light — Markup heading token'),
   link: tuned('#9FC5F4', '≈ IceBlue light — Markup link token'),
-  inserted: c('Sage'),
-  deleted: c('Coral'),
+  inserted: C.success,
+  deleted: C.error,
 }
 
 /** Convenience surface roles for mappings. */
 export const surfaces = {
-  base: C.Midnight,
-  editor: C.Midnight,
+  base: C.bg,
+  editor: C.bg,
   panel: chrome.panel,
   sideBar: chrome.panel,
   activityBar: chrome.sunken,
   titleBar: chrome.titleBar,
-  statusBar: C.Plum,
+  statusBar: C.raised,
   tab: chrome.tab,
   tabInactive: chrome.tabIdle,
   input: chrome.input,
@@ -156,4 +165,28 @@ export const surfaces = {
   active: chrome.tab,
   selected: chrome.selected,
   sunken: chrome.sunken,
+}
+
+/** Registry entry consumed by build/emitters. Same shape as definePalette(). */
+export const palette = {
+  id: 'lilac',
+  variant: 'Lilac',
+  label: 'Eden Lilac',
+  family: 'Eden Bloom',
+  description: 'Dark lilac — the original Eden Bloom palette, hand-tuned in a live overlay',
+  uiTheme: 'vs-dark',
+  base,
+  names,
+  C,
+  hidden,
+  chrome,
+  line,
+  text,
+  accent,
+  state,
+  alphaed,
+  selectionOpaque,
+  terminal16,
+  tokens,
+  surfaces,
 }

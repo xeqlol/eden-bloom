@@ -16,7 +16,7 @@ test('surgery on the current live settings snapshot: blocks removed, theme set',
   const { output, changed } = applySettings(read('settings-current.json'))
   assert.equal(changed, true)
   const parsed = JSON.parse(output)
-  assert.equal(parsed['workbench.colorTheme'], 'Midnight Lilac')
+  assert.equal(parsed['workbench.colorTheme'], 'Eden Lilac')
   assert.ok(!('workbench.colorCustomizations' in parsed), 'colorCustomizations must be gone')
   assert.ok(!('editor.tokenColorCustomizations' in parsed), 'tokenColorCustomizations must be gone')
 })
@@ -24,7 +24,7 @@ test('surgery on the current live settings snapshot: blocks removed, theme set',
 test('surgery on JSONC fixture: comments, trailing commas, URLs and siblings survive', () => {
   const { output } = applySettings(read('settings-with-comments.jsonc'))
   const parsed = JSON.parse(output)
-  assert.equal(parsed['workbench.colorTheme'], 'Midnight Lilac')
+  assert.equal(parsed['workbench.colorTheme'], 'Eden Lilac')
   assert.equal(parsed['editor.fontSize'], 14)
   assert.equal(parsed['update.mode'], 'none')
   assert.equal(parsed['json.schemas'][0].url, 'https://json.schemastore.org/prettierrc.json')

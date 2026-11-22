@@ -1,26 +1,25 @@
 // Integrated terminal: chrome plus the full ANSI-16 palette.
-import { C, text, accent, terminal16 } from '../palette.mjs'
 
 export const sections = ['Integrated Terminal colors']
 
-export default {
-  'terminal.background': C.Midnight,
-  'terminal.foreground': text.normal,
-  'terminalCursor.foreground': accent.cursor,
-  'terminal.ansiBlack': terminal16.black,
-  'terminal.ansiRed': terminal16.red,
-  'terminal.ansiGreen': terminal16.green,
-  'terminal.ansiYellow': terminal16.yellow,
-  'terminal.ansiBlue': terminal16.blue,
-  'terminal.ansiMagenta': terminal16.magenta,
-  'terminal.ansiCyan': terminal16.cyan,
-  'terminal.ansiWhite': terminal16.white,
-  'terminal.ansiBrightBlack': terminal16.brightBlack,
-  'terminal.ansiBrightRed': terminal16.brightRed,
-  'terminal.ansiBrightGreen': terminal16.brightGreen,
-  'terminal.ansiBrightYellow': terminal16.brightYellow,
-  'terminal.ansiBrightBlue': terminal16.brightBlue,
-  'terminal.ansiBrightMagenta': terminal16.brightMagenta,
-  'terminal.ansiBrightCyan': terminal16.brightCyan,
-  'terminal.ansiBrightWhite': terminal16.brightWhite,
-}
+export default (p) => ({
+  'terminal.background': p.C.bg,
+  'terminal.foreground': p.text.normal,
+  'terminalCursor.foreground': p.accent.cursor,
+  'terminal.ansiBlack': p.terminal16.black,
+  'terminal.ansiRed': p.terminal16.red,
+  'terminal.ansiGreen': p.terminal16.green,
+  'terminal.ansiYellow': p.terminal16.yellow,
+  'terminal.ansiBlue': p.terminal16.blue,
+  'terminal.ansiMagenta': p.terminal16.magenta,
+  'terminal.ansiCyan': p.terminal16.cyan,
+  'terminal.ansiWhite': p.terminal16.white,
+  'terminal.ansiBrightBlack': p.terminal16.brightBlack,
+  'terminal.ansiBrightRed': p.terminal16.brightRed,
+  'terminal.ansiBrightGreen': p.terminal16.brightGreen,
+  'terminal.ansiBrightYellow': p.terminal16.brightYellow,
+  'terminal.ansiBrightBlue': p.terminal16.brightBlue,
+  'terminal.ansiBrightMagenta': p.terminal16.brightMagenta,
+  'terminal.ansiBrightCyan': p.terminal16.brightCyan,
+  'terminal.ansiBrightWhite': p.terminal16.brightWhite,
+})

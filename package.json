@@ -1,11 +1,11 @@
 {
-  "name": "midnight-lilac",
-  "displayName": "Midnight Lilac",
+  "name": "eden-bloom",
+  "displayName": "Eden Bloom",
   "publisher": "xeqlol",
   "version": "0.1.0",
   "license": "MIT",
   "icon": "icon.png",
-  "description": "Dark lilac theme for VS Code, generated from a single palette",
+  "description": "A family of dark themes grown from 10-color palettes: VS Code, WezTerm and Obsidian, generated from a single source of truth",
   "engines": {
     "vscode": "^1.85.0",
     "node": ">=22.2.0"
@@ -16,19 +16,38 @@
   "keywords": [
     "theme",
     "dark",
+    "color scheme",
     "lilac",
-    "purple"
+    "purple",
+    "ember",
+    "moss",
+    "deep sea"
   ],
   "repository": {
     "type": "git",
-    "url": "https://github.com/xeqlol/midnight-lilac"
+    "url": "https://github.com/xeqlol/eden-bloom"
   },
   "contributes": {
     "themes": [
       {
-        "label": "Midnight Lilac",
+        "label": "Eden Lilac",
         "uiTheme": "vs-dark",
-        "path": "./themes/midnight-lilac-color-theme.json"
+        "path": "./themes/lilac-color-theme.json"
+      },
+      {
+        "label": "Eden Ember",
+        "uiTheme": "vs-dark",
+        "path": "./themes/ember-color-theme.json"
+      },
+      {
+        "label": "Eden Moss",
+        "uiTheme": "vs-dark",
+        "path": "./themes/moss-color-theme.json"
+      },
+      {
+        "label": "Eden Deep Sea",
+        "uiTheme": "vs-dark",
+        "path": "./themes/deep-sea-color-theme.json"
       }
     ]
   },
@@ -37,6 +56,8 @@
     "test": "node --test",
     "fixture": "node scripts/extract-ids.mjs",
     "package": "npm run build && npm test && npx @vscode/vsce package",
-    "deploy": "bash deploy.sh"
+    "deploy": "bash deploy.sh",
+    "release": "node scripts/release.mjs",
+    "publish:marketplace": "npx @vscode/vsce publish"
   }
 }

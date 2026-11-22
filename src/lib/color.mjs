@@ -90,6 +90,12 @@ function toHsl({ r, g, b }) {
   return [h, s, l]
 }
 
+/** H, S, L of a Color for targets that speak HSL (Obsidian accent variables). */
+export const hslOf = (c) => {
+  const [h, s, l] = toHsl(c)
+  return { h: Math.round(h), s: Math.round(s * 100), l: Math.round(l * 100) }
+}
+
 function hslToChannels(h, s, l) {
   const c = (1 - Math.abs(2 * l - 1)) * s
   const hp = h / 60

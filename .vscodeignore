@@ -2,10 +2,13 @@ src/**
 test/**
 scripts/**
 research/**
+preview/**
+wezterm/**
+obsidian/**
+icons/**
 build.mjs
 deploy.sh
 vscode_theme.json
-wezterm_theme.lua
 **/.git*
 **/.gitignore
 **/.gitattributes

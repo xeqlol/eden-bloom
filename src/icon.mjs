@@ -1,8 +1,7 @@
-// Icon "Lilac bloom": pure-Node PNG writer + signed-distance-field renderer.
+// Icon "bloom": pure-Node PNG writer + signed-distance-field renderer.
 // All colors come from the palette (pre-blended via the color API, so icon
 // colors carry provenance like everything else). No fonts, no deps.
 import { deflateSync, crc32 } from 'node:zlib'
-import { C } from './palette.mjs'
 import { blend } from './lib/color.mjs'
 
 const SIZE = 128
@@ -48,12 +47,12 @@ const cov = (dist) => {
 const circleSdf = (x, y, cx, cy, r) => Math.hypot(x - cx, y - cy) - r
 const ringSdf = (x, y, cx, cy, r, halfWidth) => Math.abs(Math.hypot(x - cx, y - cy) - r) - halfWidth
 
-export function renderIcon() {
-  const bg = rgb(C.Midnight)
-  const ring = rgb(blend(C.Lavender, C.Midnight, 0.6, 'icon ring: Lavender over Midnight'))
-  const petalSources = [C.Lilac, C.Rose, C.IceBlue, C.Peach, C.Sage]
-  const petals = petalSources.map((p) => rgb(blend(p, C.Midnight, 0.85, `icon petal: ${p.note} over Midnight`)))
-  const core = rgb(C.Sunlight)
+export function renderIcon(pal) {
+  const bg = rgb(pal.C.bg)
+  const ring = rgb(blend(pal.C.muted, pal.C.bg, 0.6, 'icon ring: muted over bg'))
+  const petalSources = [pal.C.accent, pal.C.secondary, pal.C.info, pal.C.warm, pal.C.success]
+  const petals = petalSources.map((s) => rgb(blend(s, pal.C.bg, 0.85, `icon petal: ${s.note} over bg`)))
+  const core = rgb(pal.C.bright)
 
   const cx = SIZE / 2 - 0.5
   const cy = SIZE / 2 - 0.5
