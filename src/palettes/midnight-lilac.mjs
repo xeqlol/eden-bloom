@@ -43,20 +43,20 @@ export const chrome = {
   selected: tuned('#51436F', '≈ Plum→Lilac .35 — overlay badge/list selection background'),
 }
 
-/** Borders and separators. Softening pass 2026-11-22: pulled closer to the
- * surfaces (was .25/.28/.4 mixes) so chrome frames read gentle, not boxed. */
+/** Borders and separators. Softening passes 2026-11-22: pulled closer to the
+ * surfaces twice (was .25/.28/.4 mixes) so chrome frames read gentle, not boxed. */
 export const line = {
-  subtle: mix(C.bg, C.muted, 0.12, 'border: Midnight→Lavender .12 (softened from .18)'),
-  panel: tuned('#342E48', '≈ Plum→Lavender .15 — overlay panel.border, softened from #39324F'),
-  indent: tuned('#342F46', '≈ Plum→Lavender .17 — overlay editorIndentGuide.background, softened from #39344D'),
+  subtle: mix(C.bg, C.muted, 0.08, 'border: Midnight→Lavender .08 (softened from .18 → .12 → .08)'),
+  panel: tuned('#302B42', '≈ Plum→Lavender .09 — overlay panel.border, softened from #39324F → #342E48'),
+  indent: tuned('#302C43', '≈ Plum→Lavender .11 — overlay editorIndentGuide.background, softened from #39344D → #342F46'),
   activeIndent: tuned('#82739F', '≈ Lavender darkened — overlay editorIndentGuide.activeBackground'),
-  strong: tuned('#463E5B', '≈ Plum→Lavender .3 — overlay input.border, softened from #514866'),
+  strong: tuned('#3F3852', '≈ Plum→Lavender .22 — overlay input.border, softened from #514866 → #463E5B'),
 }
 
 /** Foreground text roles. */
 export const text = {
   normal: tuned('#E9E2F2', '≈ Midnight→white .87 — overlay editor.foreground'),
-  soft: tuned('#CFC6DF', '≈ Midnight→white .8, Lavender-tinted — overlay sideBar.foreground (file tree), softened from #D9D0E8'),
+  soft: tuned('#C5BCD7', '≈ Midnight→white .75, Lavender-tinted — overlay sideBar.foreground (file tree), softened from #D9D0E8 → #CFC6DF'),
   status: tuned('#E9DDF0', '≈ Midnight→Lilac-white — overlay statusBar.foreground'),
   title: tuned('#E9E0F0', '≈ Midnight→white .85 — overlay titleBar.activeForeground'),
   input: tuned('#F0E8F5', '≈ Midnight→white .9 — overlay input.foreground'),

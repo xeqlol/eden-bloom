@@ -21,17 +21,17 @@ function deriveRoles(C) {
     hover: d(C.bg, C.raised, 0.7, 'chrome.hover'),
     selected: d(C.raised, C.accent, 0.35, 'chrome.selected'),
   }
-  // Border mixes softened 2026-11-22 (mirrors the flagship's softening pass).
+  // Border mixes softened 2026-11-22, twice (mirrors the flagship's passes).
   const line = {
-    subtle: d(C.bg, C.muted, 0.12, 'line.subtle'),
-    panel: d(C.raised, C.muted, 0.17, 'line.panel'),
-    indent: d(C.raised, C.muted, 0.19, 'line.indent'),
+    subtle: d(C.bg, C.muted, 0.08, 'line.subtle'),
+    panel: d(C.raised, C.muted, 0.12, 'line.panel'),
+    indent: d(C.raised, C.muted, 0.14, 'line.indent'),
     activeIndent: darken(C.muted, 0.14, 'line.activeIndent: darken(muted)'),
-    strong: d(C.raised, C.muted, 0.3, 'line.strong'),
+    strong: d(C.raised, C.muted, 0.24, 'line.strong'),
   }
   const text = {
     normal: lighten(C.bg, 0.87, 'text.normal: bg→white .87'),
-    soft: mix(lighten(C.bg, 0.8), C.muted, 0.12, 'text.soft: bg→white .8, muted-tinted (softened)'),
+    soft: mix(lighten(C.bg, 0.75), C.muted, 0.15, 'text.soft: bg→white .75, muted-tinted (softened)'),
     status: mix(lighten(C.bg, 0.87), C.accent, 0.18, 'text.status: normal tinted with accent'),
     title: lighten(C.bg, 0.85, 'text.title: bg→white .85'),
     input: lighten(C.bg, 0.9, 'text.input: bg→white .9'),

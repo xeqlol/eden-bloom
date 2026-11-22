@@ -43,15 +43,15 @@ test('flagship key text/line/accent roles carry their overlay values verbatim', 
   assert.equal(palette.accent.button.hex6(), overlay['button.background'])
 })
 
-// Softening pass 2026-11-22: borders pulled closer to the surfaces, file-tree
-// text dimmed a touch. Pinned here (not read from the overlay) so accidental
+// Softening passes 2026-11-22 (x2): borders pulled closer to the surfaces,
+// file-tree text dimmed. Pinned here (not read from the overlay) so accidental
 // drift fails loudly while the deviation stays deliberate.
 test('softened roles are pinned to their 2026-11-22 values', () => {
-  assert.equal(palette.line.subtle.hex6().toLowerCase(), '#242337')
-  assert.equal(palette.line.panel.hex6().toLowerCase(), '#342e48')
-  assert.equal(palette.line.indent.hex6().toLowerCase(), '#342f46')
-  assert.equal(palette.line.strong.hex6().toLowerCase(), '#463e5b')
-  assert.equal(palette.text.soft.hex6().toLowerCase(), '#cfc6df')
+  assert.equal(palette.line.subtle.hex6().toLowerCase(), '#201f32')
+  assert.equal(palette.line.panel.hex6().toLowerCase(), '#302b42')
+  assert.equal(palette.line.indent.hex6().toLowerCase(), '#302c43')
+  assert.equal(palette.line.strong.hex6().toLowerCase(), '#3f3852')
+  assert.equal(palette.text.soft.hex6().toLowerCase(), '#c5bcd7')
 })
 
 test('flagship alphaed roles carry the overlay alpha values verbatim', () => {

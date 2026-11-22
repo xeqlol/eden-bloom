@@ -11,13 +11,13 @@ M.colors = {
   selection_fg = '#e0e1e0',
   selection_bg = '#3d4d37', -- pre-blended overlay selection @47% over the background
   split = '#556b4c',
-  scrollbar_thumb = '#334035',
+  scrollbar_thumb = '#2e3b30',
   compose_cursor = '#f08a8a',
   visual_bell = '#8a9c8a',
   copy_mode_active_highlight_bg = { Color = '#556b4c' },
   copy_mode_active_highlight_fg = { Color = '#f7f5e3' },
   copy_mode_inactive_highlight_bg = { Color = '#1b261d' },
-  copy_mode_inactive_highlight_fg = { Color = '#c8cbc8' },
+  copy_mode_inactive_highlight_fg = { Color = '#bbc0bb' },
   quick_select_label_bg = { Color = '#b8e39b' },
   quick_select_label_fg = { Color = '#131a14' },
   quick_select_match_bg = { Color = '#556b4c' },
@@ -44,7 +44,7 @@ M.colors = {
   },
   tab_bar = {
     background = '#161e17', -- retro tab bar only; ignored by fancy
-    inactive_tab_edge = '#3f4d41',
+    inactive_tab_edge = '#39463a',
     active_tab = {
       bg_color = '#1a231b',
       fg_color = '#f7f5e3',
@@ -92,8 +92,8 @@ M.window_frame = {
   inactive_titlebar_bg = '#172019',
   active_titlebar_fg = '#e0e1e0',
   inactive_titlebar_fg = '#9fae9f',
-  active_titlebar_border_bottom = '#313e33',
-  inactive_titlebar_border_bottom = '#313e33',
+  active_titlebar_border_bottom = '#2c392e',
+  inactive_titlebar_border_bottom = '#2c392e',
   button_fg = '#9fae9f',
   button_bg = '#161e17',
   button_hover_fg = '#f7f5e3',
