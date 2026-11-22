@@ -15,35 +15,69 @@ gallery of every palette (swatches, chrome ramp, syntax sample, ANSI-16).
 
 ## Install
 
+No marketplace listing (yet) — everything installs straight from this repo.
+
 ### VS Code
 
-- Marketplace: search “Eden Bloom” (all four themes in one extension)
-- Or from a checkout: `npm run package` → install the resulting `.vsix`
+Build the extension from source (pure Node ≥ 22.2, no dependencies to install):
+
+```
+git clone https://github.com/xeqlol/eden-bloom
+cd eden-bloom
+npm run package
+```
+
+This produces `eden-bloom-<version>.vsix`. Then in VS Code:
+
+1. Open the Extensions view (`Ctrl+Shift+X`)
+2. `⋮` menu → **Install from VSIX…** → pick the `.vsix`
+3. Reload when prompted, then pick a theme with `Ctrl+K Ctrl+T`
+
+The extension ships all four themes — **Eden Lilac**, **Eden Ember**,
+**Eden Moss**, **Eden Deep Sea**.
 
 ### WezTerm
 
-`wezterm/<id>.lua` is a self-contained module. Register the ones you want:
+Every `wezterm/<id>.lua` is a self-contained module. Register the ones you
+like in `~/.wezterm.lua`, anywhere before `return config`:
 
 ```lua
-local eden = dofile '/path/to/eden-bloom/wezterm/lilac.lua'
+local lilac = dofile '/path/to/eden-bloom/wezterm/lilac.lua'
+local ember = dofile '/path/to/eden-bloom/wezterm/ember.lua'
+
 config.color_schemes = config.color_schemes or {}
-config.color_schemes[eden.name] = eden.colors
-config.window_frame = eden.window_frame
-config.color_scheme = eden.name
+config.color_schemes[lilac.name] = lilac.colors
+config.color_schemes[ember.name] = ember.colors
+
+config.window_frame = lilac.window_frame
+config.color_scheme = lilac.name -- the default; switch schemes freely
 ```
 
-Or, on the machine with this checkout: `npm run deploy` wires all of them into
-`~/.wezterm.lua` as switchable schemes (flagship selected by default).
+On a machine with this checkout, `npm run deploy` can wire all four in
+automatically (as switchable schemes, flagship selected by default).
 
 ### Obsidian
 
-Generated themes live in `obsidian/<id>/` (`theme.css` + `manifest.json`):
+Each `obsidian/<id>/` folder is a complete theme (`theme.css` + `manifest.json`).
+Copy the ones you want into your vault's themes directory — e.g. for Eden Lilac:
 
 ```
-node scripts/install-obsidian.mjs --vault <vault-path> --apply
+<your-vault>/.obsidian/themes/Eden Lilac/
+├── manifest.json
+└── theme.css
 ```
 
-Then Settings → Appearance → pick an Eden theme. Use with base theme **Dark**.
+(The folder name is up to you — the name in `manifest.json` is what Obsidian
+shows. Base theme must be **Dark**.)
+
+From a checkout you can skip the manual copy:
+
+```
+node scripts/install-obsidian.mjs --vault <vault-path> --apply           # all four
+node scripts/install-obsidian.mjs --vault <vault-path> --theme moss --apply
+```
+
+Restart Obsidian, then Settings → Appearance → **Theme** → Eden …
 
 ## The palettes
 
